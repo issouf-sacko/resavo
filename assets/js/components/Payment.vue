@@ -44,7 +44,7 @@
         mounted: function () {
             const script = document.createElement("script");
             script.src =
-                "https://www.paypal.com/sdk/js?client-id=Afbh-Bgw6uzC1YvdeuMSIOenKPYHNrFL3EAGqS2MpGIA2ts3TuXxKLvNpUVZNcDQCN6sVIlVfFQdkKr3&currency=EUR&debug=false&disable-card=amex&intent=authorize";
+                "https://www.paypal.com/sdk/js?client-id=ASuGum4KTvMelsc2xucpP524-nwCCNPN8aU9jJbXIn7CvNy1b9vM32oMsbKXB_fCdbdySwP8IA7zglhL&currency=EUR&debug=false&disable-card=amex&intent=authorize";
             script.addEventListener("load", this.setLoaded);
             document.body.appendChild(script);
         },
