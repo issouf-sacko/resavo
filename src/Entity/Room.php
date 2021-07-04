@@ -8,6 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ApiResource(attributes={"normalization_context"={"groups"={"room:read"}}},
@@ -17,6 +19,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     itemOperations={"get"}
  * )
  * @ORM\Entity(repositoryClass="App\Repository\RoomRepository")
+ * @Vich\Uploadable
  */
 class Room
 {
@@ -54,10 +57,19 @@ class Room
      */
     private Collection $meetings;
 
+
+    /**
+     * @ORM\OneToMany(targetEntity="MediaObject", mappedBy="room", cascade={"persist"})
+     */
+    private $images;
+
     public function __construct()
     {
         $this->bookings = new ArrayCollection();
         $this->meetings = new ArrayCollection();
+        $this->media = new ArrayCollection();
+        $this->mediaObjects = new ArrayCollection();
+        $this->images = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -173,4 +185,72 @@ class Room
 
         return $this;
     }
+
+    public function addBooking(Booking $booking): self
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings[] = $booking;
+            $booking->setRoom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): self
+    {
+        if ($this->bookings->removeElement($booking)) {
+            // set the owning side to null (unless already changed)
+            if ($booking->getRoom() === $this) {
+                $booking->setRoom(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeMeeting(Meeting $meeting): self
+    {
+        if ($this->meetings->removeElement($meeting)) {
+            // set the owning side to null (unless already changed)
+            if ($meeting->getRoom() === $this) {
+                $meeting->setRoom(null);
+            }
+        }
+
+        return $this;
+    }
+
+   
+
+    /**
+     * @return Collection|MediaObject[]
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(MediaObject $image): self
+    {
+        if (!$this->images->contains($image)) {
+            $this->images[] = $image;
+            $image->setRoom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(MediaObject $image): self
+    {
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getRoom() === $this) {
+                $image->setRoom(null);
+            }
+        }
+
+        return $this;
+    }
+
+    
 }

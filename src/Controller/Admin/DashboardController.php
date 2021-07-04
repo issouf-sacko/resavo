@@ -8,6 +8,7 @@ use App\Entity\Meeting;
 use App\Entity\News;
 use App\Entity\Paypal;
 use App\Entity\User;
+use App\Entity\Room;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -36,6 +37,7 @@ class DashboardController extends AbstractDashboardController
 
         yield MenuItem::section('Autres', 'fas fa-folder-open');
         yield MenuItem::linkToCrud('News', 'far fa-newspaper', News::class);
+        yield MenuItem::linkToCrud('Room', 'far fa-newspaper', Room::class);
         yield MenuItem::linkToCrud('Client', 'fas fa-user', User::class)->setDefaultSort(['name' => 'ASC']);
         yield MenuItem::linkToCrud('Séance', 'fas fa-clock', Meeting::class)->setDefaultSort(['id' => 'ASC']);
         yield MenuItem::linkToCrud('Bloqué une date', 'fas fa-clock', DateBlocked::class)->setDefaultSort(['start' => 'DESC']);
